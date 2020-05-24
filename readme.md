@@ -325,7 +325,7 @@ main:
 ### 插桩后汇编代码
 
 ```bash
-gcc-fprofile-arcs -ftest-coverage-S test.i
+gcc -fprofile-arcs -ftest-coverage -S test.i
 ```
 
 ```assembly
