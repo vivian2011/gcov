@@ -17,8 +17,8 @@ gcc -fprofile-arcs -ftest-coverage test.c -o test
 
 - 运行
   `./test`
-  生成`.gcna`文件
-  ![2017-10-28 11-05-11屏幕截图.png](./picture/2017-10-28 11-05-11屏幕截图.png)
+  生成`.gcda`文件
+  ![gcda.png](./picture/gcda.png)
 
 **这个时候我们可以使用`gcov`生成`*.c.gcov`文件查看具体覆盖信息，也可以使用`lcov`生成html页面查看覆盖率报告**
 
@@ -77,8 +77,8 @@ gcov(gcc coverage)是一个测试代码覆盖率工具，可以统计每一行�
 
 具体命令;
 - `cpp test.c -o test.i`：预处理，传入`.c`文件，生成`.i`
-- `gcc -S test.i`：编译插桩：传入`.i`文件，生成`.s`文件
-- `as -o test.0 test.s`：汇编：传入`.i`文件，生成`.o`文件
+- `gcc -s test.i`：编译插桩：传入`.i`文件，生成`.s`文件
+- `as -o test.o test.s`：汇编：传入`.s`文件，生成`.o`文件
 - `gcc -o test test.o`：链接：传入`.o`文件，生成`test`可执行文件
 
 ## gcov原理
@@ -92,15 +92,15 @@ gcov(gcc coverage)是一个测试代码覆盖率工具，可以统计每一行�
 gcc -fprofile-arcs -ftest-coverage test.c -o test
 ```
 可以发现`-fprofile-arcs -ftest-coverage`就是让gcc完成插桩的关键
-`-fprofile-arcs `会产生`.gcno`文件，在gcov种，会读取该文件，重组每一个可执行程序的程序流图
-`-ftest-coverage`会产生`.gcda`文件，该文件包含每个指令分支的执行次数信息。
-相比与未插桩，插桩时会多出一些上诉的数据文件，基本流程如图：
+`-ftest-coverage `会产生`.gcno`文件，在gcov种，会读取该文件，重组每一个可执行程序的程序流图
+`-fprofile-arcs`会产生`.gcda`文件，该文件包含每个指令分支的执行次数信息。
+相比与未插桩，插桩时会多出一些上述的数据文件，基本流程如图：
 
 ![gcov过程.PNG](./picture/gcov过程.PNG)
-上图中的`.ba`和`.bbg`文件，后期gcc版本变成了`.gcno`文件；
+上图中的`.bb`和`.bbg`文件，后期gcc版本变成了`.gcno`文件；
 当我们之后运行可执行文件(`./test`)，会产生`.da`文件，后期版本变成了`.gcda`文件。
 
-下面将在`.s`汇编文件种比较插桩前后的汇编代码。
+下面将在`.s`汇编文件中比较插桩前后的汇编代码。
 对于源文件`test.c`
 ```c
 00001: #include
