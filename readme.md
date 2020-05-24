@@ -255,7 +255,7 @@ test.gcno:      block 7:`test.c':16
 
 这里我们可以发现程序分为了9个block，各个block的arcs关系也列出来了，那么我们可以输出它的程序块流图。
 
-![block](.\picture\block.png)
+![block](./picture/block.png)
 
 其中`block0`和`block8`并没有具体的行数，那么我们简化一下。
 
